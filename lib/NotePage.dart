@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_note/DBHelper.dart';
 import 'package:simple_note/mynote.dart';
-
+import 'package:uuid/uuid.dart';
 class NotePage extends StatefulWidget {
   NotePage(this._mynote, this._isNew);
 
@@ -30,13 +30,16 @@ class _NotePageState extends State<NotePage> {
 
   bool _enabledTextField = true;
 
+  var uuid = new Uuid();
+
   Future addRecord() async {
     var db = DBHelper();
     String dateNow = "${now.day}-${now.month}-${now.year}, ${now.hour}:${now.minute}";
 
     var mynote = Mynote(cTitle.text, cNote.text, dateNow, dateNow, dateNow.toString());
+    var uuid = this.uuid.v4();
+    mynote.setNodeId(uuid);
     await db.saveNote(mynote);
-    print("note saved");
   }
 
   Future updateRecord() async {

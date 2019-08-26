@@ -23,6 +23,8 @@ class DBHelper{
   setDB() async {
     io.Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, "SimpleNoteDB");
+//    await ((await openDatabase(path)).close());
+//    await deleteDatabase(path);
 
     var mainDB = await openDatabase(path, version: 1, onCreate: _onCreate);
     return mainDB;
@@ -30,7 +32,7 @@ class DBHelper{
 
 
   void _onCreate(Database db, int version) async {
-    await db.execute("CREATE TABLE mynote(id INTEGER PRIMARY KEY, title TEXT, note TEXT, createdAt TEXT, updatedAt TEXT, sortDate Text)");
+    await db.execute("CREATE TABLE mynote(id BLOB PRIMARY KEY, title TEXT, note TEXT, createdAt TEXT, updatedAt TEXT, sortDate Text)");
     print("DB Created");
   }
 
@@ -38,7 +40,6 @@ class DBHelper{
   Future<int> saveNote(Mynote mynote) async {
     var dbClient = await db;
     int res = await dbClient.insert("mynote", mynote.toMap());
-    print("Data Inserted");
     return res;
   }
 
@@ -58,7 +59,7 @@ class DBHelper{
 
   Future<bool> updateNote(Mynote mynote) async{
     var dbClient = await db;
-    int res = await dbClient.update("mynote", mynote.toMap(), where: "id=?", whereArgs: <int>[mynote.id]);
+    int res = await dbClient.update("mynote", mynote.toMap(), where: "id=?", whereArgs: <String>[mynote.id]);
 
     return res > 0 ? true : false;
   }

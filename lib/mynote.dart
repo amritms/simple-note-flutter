@@ -1,7 +1,7 @@
 
 
 class Mynote {
-  int id;
+  String id;
   String _title;
   String _note;
   String _createdAt;
@@ -28,7 +28,7 @@ class Mynote {
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-
+    map["id"] = id;
     map["title"] = title;
     map["note"] = note;
     map["createdAt"] = _createdAt;
@@ -38,7 +38,7 @@ class Mynote {
     return map;
   }
 
-  void setNodeId(int id) {
+  void setNodeId(String id) {
     this.id = id;
   }
 }
